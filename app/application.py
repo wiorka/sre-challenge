@@ -2,11 +2,14 @@ import sqlite3
 import logging
 import os
 from flask import Flask, session, redirect, url_for, request, render_template, abort
+from flask_wtf import CSRFProtect
 
 
 app = Flask(__name__)
-app.secret_key = os.environ.get("FLASK_SECRET_KEY", default=os.urandom(24).hex())
 # alternatively keep this in an uncommited config file that undergoes validation
+app.secret_key = os.environ.get("FLASK_SECRET_KEY", default=os.urandom(24).hex())
+# Enable CSRF protection (include tokens in requests)
+csrf = CSRFProtect(app)
 app.logger.setLevel(logging.INFO)
 # make sure templates are rendered with autoescape
 app.jinja_options["autoescape"] = True
