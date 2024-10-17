@@ -8,6 +8,8 @@ app = Flask(__name__)
 app.secret_key = os.environ.get("FLASK_SECRET_KEY", default=os.urandom(24).hex())
 # alternatively keep this in an uncommited config file that undergoes validation
 app.logger.setLevel(logging.INFO)
+# make sure templates are rendered with autoescape
+app.jinja_options["autoescape"] = True
 
 
 def get_db_connection():
