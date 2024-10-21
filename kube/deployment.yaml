@@ -1,0 +1,37 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: flaskapp-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: flaskapp
+  template:
+    metadata:
+      labels:
+        app: flaskapp
+    spec:
+      containers:
+      - name: flaskapp
+        image: warpnet-challenge:0.1.0
+        ports:
+        - containerPort: 8000
+        envFrom:
+        - secretRef:
+            name: flask-secret-key
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: warpnet-service
+spec:
+  selector:
+    app: flaskapp
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 8000
+  type: LoadBalancer
