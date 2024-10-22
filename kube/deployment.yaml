@@ -4,7 +4,7 @@ kind: Deployment
 metadata:
   name: flaskapp-deployment
 spec:
-  replicas: 1
+  replicas: 2
   selector:
     matchLabels:
       app: flaskapp
@@ -15,12 +15,28 @@ spec:
     spec:
       containers:
       - name: flaskapp
-        image: warpnet-challenge:0.1.0
+        image: warpnet-challenge:0.2.0
         ports:
         - containerPort: 8000
         envFrom:
         - secretRef:
             name: flask-secret-key
+        resources:
+          limits:
+            memory: "100Mi"
+            cpu: "100m"
+          requests:
+            memory: "60Mi"
+            cpu: "70m"
+        livenessProbe:
+          httpGet:
+            path: /ping
+            port: 8000
+          periodSeconds: 10
+        readinessProbe:
+          httpGet:
+            path: /
+            port: 8000
 
 ---
 apiVersion: v1

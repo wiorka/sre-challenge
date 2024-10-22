@@ -2,6 +2,7 @@ import sqlite3
 import logging
 import os
 from flask import Flask, session, redirect, url_for, request, render_template, abort
+from flask_status import FlaskStatus
 from flask_wtf import CSRFProtect
 
 
@@ -13,6 +14,8 @@ csrf = CSRFProtect(app)
 app.logger.setLevel(logging.INFO)
 # make sure templates are rendered with autoescape
 app.jinja_options["autoescape"] = True
+# create ping/status endpoint
+FlaskStatus(app, url="/ping")
 
 
 def get_db_connection():
