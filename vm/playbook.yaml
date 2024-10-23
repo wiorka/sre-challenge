@@ -1,0 +1,31 @@
+- name: Set up a flask app
+  hosts: all
+  tasks:
+    - name: Install pip
+      become: true
+      ansible.builtin.apt:
+        name:
+          - python3-pip
+          - python3-venv  # workaround for debian systems where `ensurepip` is not available
+        state: present
+        update_cache: true
+    - name: Set the webapp location
+      ansible.builtin.set_fact:
+        # default user is unprivileged 'vagrant', which is fine here
+        app_dir: ${HOME}/warpnet-challenge
+    - name: Copy project files
+      ansible.builtin.copy:
+        src: ../app
+        dest: "{{ app_dir }}"
+    - name: Install pip dependencies
+      ansible.builtin.pip:
+         requirements: "{{ app_dir }}/app/requirements.txt"
+         virtualenv_command: "python3 -m venv"
+         virtualenv: "{{ app_dir }}/venv"
+    - name: Run flask app
+      environment:
+        GUNICORN_CMD_ARGS: "--bind=0.0.0.0:8000"
+      community.general.gunicorn:
+        chdir: "{{ app_dir }}/app"
+        venv: "{{ app_dir }}/venv"
+        app: application:app

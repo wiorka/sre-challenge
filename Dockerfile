@@ -13,7 +13,7 @@ COPY app/ ${APP_DIR}/
 WORKDIR ${APP_DIR}
 
 # install dependencies
-RUN pip install --no-cache-dir -r requirements.txt gunicorn
+RUN pip install --no-cache-dir -r requirements.txt
 
 EXPOSE 8000
 
