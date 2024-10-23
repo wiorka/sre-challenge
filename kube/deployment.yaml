@@ -37,6 +37,9 @@ spec:
           httpGet:
             path: /
             port: 8000
+        securityContext:
+          allowPrivilegeEscalation: false
+
 
 ---
 apiVersion: v1
