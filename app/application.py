@@ -1,19 +1,27 @@
 import sqlite3
 import logging
 import os
+import sys
 from flask import Flask, session, redirect, url_for, request, render_template, abort
 from flask_status import FlaskStatus
 from flask_wtf import CSRFProtect
 
-
 app = Flask(__name__)
-# alternatively keep this in an uncommited config file that undergoes validation
-app.secret_key = os.environ.get("FLASK_SECRET_KEY", default=os.urandom(24).hex())
+app.logger.setLevel(logging.INFO)
+
+secret_key = os.environ.get("FLASK_SECRET_KEY")
+# Secret key needs to be stable; Fail if it's not set up beforehand.
+if not secret_key:
+    app.logger.error("Missing required environment variable FLASK_SECRET_KEY")
+    sys.exit(1)
+app.secret_key = secret_key
+
 # Enable CSRF protection (include tokens in requests)
 csrf = CSRFProtect(app)
-app.logger.setLevel(logging.INFO)
+
 # make sure templates are rendered with autoescape
 app.jinja_options["autoescape"] = True
+
 # create ping/status endpoint
 FlaskStatus(app, url="/ping")
 
