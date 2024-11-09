@@ -1,5 +1,5 @@
 flask==3.0.1
 flask-wtf==1.2.1
-wtforms==3.1.2
+wtforms==3.2.1
 flask-status==1.0.1
 gunicorn==23.0.0
