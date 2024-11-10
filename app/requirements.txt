@@ -1,4 +1,4 @@
-flask==3.0.1
+flask==3.0.3
 flask-wtf==1.2.1
 wtforms==3.1.2
 flask-status==1.0.1
