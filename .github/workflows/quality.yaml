@@ -3,6 +3,7 @@ name: Quality checks
 
 on:
   pull_request:
+  workflow_dispatch:
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -31,6 +32,8 @@ jobs:
           dockerfile: Dockerfile
       - name: Build docker image
         run: docker build -t image:${{ github.sha }} .
+      # this can fail on rate limit, see https://github.com/aquasecurity/trivy/discussions/7668
+      # the action uses cache to mitigate the issue somewhat
       - name: Check for image vulnerabilities
         uses: aquasecurity/trivy-action@0.28.0
         with:
