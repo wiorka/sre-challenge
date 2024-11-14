@@ -40,6 +40,7 @@ def is_authenticated():
 
 def authenticate(username, password):
     connection = get_db_connection()
+    # FIXME: improve the query not to fetch all users
     users = connection.execute("SELECT * FROM users").fetchall()
     connection.close()
 
@@ -61,6 +62,7 @@ def index():
 @app.route("/login", methods=["GET", "POST"])
 def login():
     if request.method == "POST":
+        # TODO: sanitize input
         username = request.form.get("username")
         password = request.form.get("password")
         if authenticate(username, password):
