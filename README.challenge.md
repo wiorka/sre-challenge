@@ -52,8 +52,10 @@ Create a kubernetes secret that saves this key in the cluster:
 kubectl create secret generic flask-secret-key --from-literal=FLASK_SECRET_KEY=${FLASK_SECRET_KEY}
 ```
 
-Apply kubernets config:
+Apply kubernetes config:
 ```bash
+
+
 kubectl apply -f kube/deployment.yaml
 ```
 
@@ -98,11 +100,18 @@ vagrant provision
 
 Connect to the app via `http://127.0.0.1:8000`.
 
+# Monitoring
+To move away from the standard Prometheus setup, we can try [VictoriaMetrics](https://docs.victoriametrics.com) 
+combined with Grafana. It seems to be a complete open source solution coming with a time series 
+database, metrics collector, alerting etc. that is lighter and faster than Prometheus.
+
 # Improvements
 - The database shouldn't be included in the container, but mounted as a volume at the very least.
-  Normally it would run as a separate service.
+  For cloud deployment, it should run as a separate service.
 - Passwords in the database should be encrypted.
 - It's recommended to put nginx in front of gunicorn to handle traffic properly.
 - Reorganize the source files so it's easier to copy/mount only the required files.
-- Set up dependabot config.
 - Set up ingress + TLS certificates in the cluster (ingress-nginx controller).
+- Tests.
+- Trivy can be also used to detect misconfigurations in k8s manifests.
+- Versioning and releases.
