@@ -54,8 +54,6 @@ kubectl create secret generic flask-secret-key --from-literal=FLASK_SECRET_KEY=$
 
 Apply kubernetes config:
 ```bash
-
-
 kubectl apply -f kube/deployment.yaml
 ```
 
@@ -89,6 +87,13 @@ Install ansible collections manually, because vagrant is not great about that:
 ```bash
 ansible-galaxy collection install -r vrequirements.yaml
 ```
+
+Generate a secret key for the flask app and export it as an env variable. You can use `uuid` or
+anything else that will generate a random string:
+```bash
+export FLASK_SECRET_KEY=$(cat /proc/sys/kernel/random/uuid)
+```
+
 Navigate to the `vm` folder and start the vagrant machine with provisioning:
 ```bash
 vagrant up --provision
