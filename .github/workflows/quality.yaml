@@ -35,7 +35,7 @@ jobs:
       # this can fail on rate limit, see https://github.com/aquasecurity/trivy/discussions/7668
       # the action uses cache to mitigate the issue somewhat
       - name: Check for image vulnerabilities
-        uses: aquasecurity/trivy-action@0.28.0
+        uses: aquasecurity/trivy-action@0.29.0
         with:
           image-ref: image:${{ github.sha }}
           format: 'table'
